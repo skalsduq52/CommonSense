@@ -1,8 +1,0 @@
-/build/
-!/build/libs/
-/target/
-.git
-*.md
-
-!k8s/
-!k8s/*
