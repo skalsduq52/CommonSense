@@ -28,6 +28,15 @@ jobs:
       - name: List build/libs contents
         run: ls -l build/libs/
 
+      - name: Find JAR File
+        run: |
+          JAR_FILE=$(ls -S build/libs/*.jar | grep -v plain | head -n 1)
+          echo "JAR_FILE=$JAR_FILE" >> $GITHUB_ENV
+          echo "Selected JAR File: $JAR_FILE"
+
+      - name: Rename JAR File for Docker
+        run: mv $JAR_FILE build/libs/app.jar
+
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
