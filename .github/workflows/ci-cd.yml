@@ -75,6 +75,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "k8s/deployment.yaml"
           target: "/home/ec2-user/k8s"
+          strip_components: 1
+          overwrite: true
 
       - name: SSH into EC2 and Deploy to Kubernetes
         uses: appleboy/ssh-action@v0.1.10
