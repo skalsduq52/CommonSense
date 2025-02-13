@@ -31,11 +31,19 @@ jobs:
       - name: Find JAR File
         run: |
           JAR_FILE=$(ls -S build/libs/*.jar | grep -v plain | head -n 1)
+          if [ -z "$JAR_FILE" ]; then
+            echo "ERROR: No JAR file found!"
+            exit 1
+          fi
           echo "JAR_FILE=$JAR_FILE" >> $GITHUB_ENV
           echo "Selected JAR File: $JAR_FILE"
 
       - name: Rename JAR File for Docker
-        run: mv $JAR_FILE build/libs/app.jar
+        run: |
+          echo "Renaming $JAR_FILE to app.jar..."
+          mv $JAR_FILE build/libs/app.jar
+          ls -l build/libs/
+      
 
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
