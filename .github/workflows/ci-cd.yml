@@ -59,21 +59,12 @@ jobs:
     needs: build
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: SSH into EC2 and Deploy to Kubernetes
+        uses: appleboy/ssh-action@v0.1.10
         with:
-          fetch-depth: 0
-
-      - name: Set up Kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'latest'
-
-      - name: Deploy to Kubernetes
-        env:
-          KUBECONFIG_DATA: ${{ secrets.KUBECONFIG }}
-        run: |
-          echo "$KUBECONFIG_DATA" > kubeconfig.yaml
-          export KUBECONFIG=$(pwd)/kubeconfig.yaml
-          kubectl apply --validate=false -f k8s/deployment.yaml
-
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+            sudo k3s kubectl apply --validate=false -f /home/ec2-user/k8s/deployment.yaml
