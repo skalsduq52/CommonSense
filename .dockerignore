@@ -3,3 +3,6 @@
 /target/
 .git
 *.md
+
+!k8s/
+!k8s/*
