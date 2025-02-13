@@ -16,6 +16,6 @@ public class NewsController {
     @GetMapping("/")
     @ResponseBody
     public String main() {
-        return "Hello World";
+        return "Hello Worlds";
     }
 }
